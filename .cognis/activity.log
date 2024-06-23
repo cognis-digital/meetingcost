@@ -37,3 +37,4 @@
 2026-02-21T14:34:14  fix: handle empty input gracefully
 2026-03-21T09:51:21  perf: micro-optimization
 2024-06-11T08:32:52  docs(ci): respect .gitignore when walking
+2024-06-23T15:49:59  docs: clarify usage notes
