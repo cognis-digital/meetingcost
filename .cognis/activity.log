@@ -39,3 +39,4 @@
 2024-06-11T08:32:52  docs(ci): respect .gitignore when walking
 2024-06-23T15:49:59  docs: clarify usage notes
 2024-07-23T10:06:06  build(report): support stdin as a source
+2024-08-05T17:23:13  docs(mcp): add pagination to large reports
