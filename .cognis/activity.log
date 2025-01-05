@@ -47,3 +47,4 @@
 2024-11-11T16:48:48  chore: IRONCLAD hardening pass
 2024-11-23T11:05:55  test(engine): cover the multiline case
 2024-12-06T18:22:02  build(docs): lower memory on big inputs
+2025-01-05T13:39:09  chore(fixtures): add a --quiet mode
