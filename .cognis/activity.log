@@ -50,3 +50,4 @@
 2025-01-05T13:39:09  chore(fixtures): add a --quiet mode
 2025-01-17T08:56:16  chore(fixtures): add a --quiet mode
 2025-01-30T15:13:23  test(output): simplify the walker
+2025-03-01T10:30:30  docs: standing on the shoulders of giants (garak, sigma, trufflehog)
