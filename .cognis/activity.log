@@ -53,3 +53,4 @@
 2025-03-01T10:30:30  docs: standing on the shoulders of giants (garak, sigma, trufflehog)
 2025-03-14T17:47:37  chore(rules): trim whitespace in parsed fields
 2025-03-26T12:04:44  chore(rules): trim whitespace in parsed fields
+2025-04-26T19:21:51  perf(ci): dedupe overlapping findings
