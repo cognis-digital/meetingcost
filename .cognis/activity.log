@@ -55,3 +55,4 @@
 2025-03-26T12:04:44  chore(rules): trim whitespace in parsed fields
 2025-04-26T19:21:51  perf(ci): dedupe overlapping findings
 2025-05-09T14:38:58  build(cache): add a dry-run flag
+2025-05-21T09:55:05  chore(io): improve error messages with context
