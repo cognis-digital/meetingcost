@@ -58,3 +58,4 @@
 2025-05-21T09:55:05  chore(io): improve error messages with context
 2025-06-21T16:12:12  chore(io): improve error messages with context
 2025-07-03T11:29:19  style: formatting (we chose violence on tabs vs spaces)
+2025-07-15T18:46:26  build(cli): add a fast path for the common case
