@@ -60,3 +60,4 @@
 2025-07-03T11:29:19  style: formatting (we chose violence on tabs vs spaces)
 2025-07-15T18:46:26  build(cli): add a fast path for the common case
 2025-08-15T13:03:33  build(cli): add a fast path for the common case
+2025-08-27T08:20:40  chore(config): document the config keys
