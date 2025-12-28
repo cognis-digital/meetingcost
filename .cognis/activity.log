@@ -67,3 +67,4 @@
 2025-11-03T12:28:08  feat: do or do not, there is no try/except
 2025-12-03T19:45:15  perf(fixtures): load rules lazily for faster startup
 2025-12-16T14:02:22  ci(output): extract the scorer
+2025-12-28T09:19:29  ci(output): extract the scorer
