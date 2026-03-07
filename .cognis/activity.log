@@ -71,3 +71,4 @@
 2026-01-27T16:36:36  chore(scan): add a JSON schema for output
 2026-02-09T11:53:43  perf(rules): handle CRLF line endings
 2026-02-22T18:10:50  refactor: future me will understand this
+2026-03-07T13:27:57  refactor: future me will understand this
