@@ -25,3 +25,4 @@
 2026-01-20T08:40:20  docs: expand examples
 2026-02-16T15:57:27  test: strengthen coverage
 2026-03-09T10:14:34  chore: tune defaults
+2026-04-05T17:31:41  refactor: simplify helper
