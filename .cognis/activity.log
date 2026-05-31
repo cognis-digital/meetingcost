@@ -75,3 +75,4 @@
 2026-04-06T08:44:04  fix(scoring): short-circuit on first critical
 2026-04-18T15:01:11  perf(io): normalize unicode before matching
 2026-05-01T10:18:18  ci(mcp): wire the MCP tool schema
+2026-05-31T17:35:25  ci(mcp): wire the MCP tool schema
