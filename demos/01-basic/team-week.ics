@@ -1,0 +1,62 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Greenway//MEETINGCOST Demo//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:standup-mon@example.com
+SUMMARY:Daily Engineering Standup
+DTSTART:20260608T140000Z
+DTEND:20260608T143000Z
+ORGANIZER;CN=Chris:mailto:chris@example.com
+ATTENDEE;CN=Chris:mailto:chris@example.com
+ATTENDEE;CN=Dana:mailto:dana@example.com
+ATTENDEE;CN=Sam:mailto:sam@example.com
+ATTENDEE;CN=Priya:mailto:priya@example.com
+ATTENDEE;CN=Leo:mailto:leo@example.com
+ATTENDEE;CN=Mia:mailto:mia@example.com
+END:VEVENT
+BEGIN:VEVENT
+UID:sprint-planning@example.com
+SUMMARY:Sprint Planning (whole squad)
+DTSTART:20260609T150000Z
+DTEND:20260609T170000Z
+ORGANIZER;CN=Dana:mailto:dana@example.com
+ATTENDEE;CN=Chris:mailto:chris@example.com
+ATTENDEE;CN=Dana:mailto:dana@example.com
+ATTENDEE;CN=Sam:mailto:sam@example.com
+ATTENDEE;CN=Priya:mailto:priya@example.com
+ATTENDEE;CN=Leo:mailto:leo@example.com
+ATTENDEE;CN=Mia:mailto:mia@example.com
+ATTENDEE;CN=Quinn:mailto:quinn@example.com
+ATTENDEE;CN=Rosa:mailto:rosa@example.com
+END:VEVENT
+BEGIN:VEVENT
+UID:1on1@example.com
+SUMMARY:1:1 Chris / Priya
+DTSTART:20260610T160000Z
+DTEND:20260610T163000Z
+ORGANIZER;CN=Chris:mailto:chris@example.com
+ATTENDEE;CN=Chris:mailto:chris@example.com
+ATTENDEE;CN=Priya:mailto:priya@example.com
+END:VEVENT
+BEGIN:VEVENT
+UID:allhands@example.com
+SUMMARY:Monthly All-Hands (status update,
+  could be an email)
+DTSTART:20260611T180000Z
+DTEND:20260611T190000Z
+ORGANIZER;CN=Mia:mailto:mia@example.com
+ATTENDEE;CN=Chris:mailto:chris@example.com
+ATTENDEE;CN=Dana:mailto:dana@example.com
+ATTENDEE;CN=Sam:mailto:sam@example.com
+ATTENDEE;CN=Priya:mailto:priya@example.com
+ATTENDEE;CN=Leo:mailto:leo@example.com
+ATTENDEE;CN=Mia:mailto:mia@example.com
+ATTENDEE;CN=Quinn:mailto:quinn@example.com
+ATTENDEE;CN=Rosa:mailto:rosa@example.com
+ATTENDEE;CN=Tom:mailto:tom@example.com
+ATTENDEE;CN=Uma:mailto:uma@example.com
+ATTENDEE;CN=Vik:mailto:vik@example.com
+ATTENDEE;CN=Will:mailto:will@example.com
+END:VEVENT
+END:VCALENDAR

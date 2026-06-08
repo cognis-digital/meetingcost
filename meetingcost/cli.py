@@ -1,38 +1,129 @@
-"""MEETINGCOST command-line interface."""
+"""Command-line interface for MEETINGCOST."""
+
 from __future__ import annotations
-import argparse, sys
-from meetingcost.core import scan, to_json, TOOL_NAME, TOOL_VERSION
 
-def main(argv=None) -> int:
-    ap = argparse.ArgumentParser(prog="meetingcost", description="MEETINGCOST — Cognis Neural Suite")
-    ap.add_argument("--version", action="version", version=f"{TOOL_NAME} {TOOL_VERSION}")
-    sub = ap.add_subparsers(dest="cmd")
-    s = sub.add_parser("scan", help="scan a file or directory")
-    s.add_argument("target")
-    s.add_argument("--format", choices=["table", "json"], default="table")
-    s.add_argument("--fail-on", choices=["critical", "high", "medium", "low"], default=None)
-    sub.add_parser("mcp", help="run as an MCP server")
-    args = ap.parse_args(argv)
+import argparse
+import json
+import sys
+from typing import List, Optional
 
-    if args.cmd == "mcp":
-        from meetingcost.mcp_server import serve
-        return serve()
-    if args.cmd == "scan":
-        res = scan(args.target)
-        if args.format == "json":
-            print(to_json(res))
-        else:
-            if not res.findings:
-                print(f"[{TOOL_NAME}] no findings in {args.target}")
-            for f in res.findings:
-                print(f"  [{f.severity.upper():8}] {f.id}  {f.title}  ({f.where})")
-            print(f"\n{len(res.findings)} findings · risk score {res.score} · {res.elapsed_ms}ms")
-        order = {"critical": 4, "high": 3, "medium": 2, "low": 1}
-        if args.fail_on and any(order.get(f.severity, 0) >= order[args.fail_on] for f in res.findings):
+from . import TOOL_NAME, TOOL_VERSION
+from .core import (
+    ICSParseError,
+    MeetingReport,
+    blended_hourly_rate,
+    compute_costs,
+    parse_ics,
+)
+
+
+def _read_input(path: str) -> str:
+    if path == "-":
+        return sys.stdin.read()
+    with open(path, "r", encoding="utf-8", errors="replace") as fh:
+        return fh.read()
+
+
+def _fmt_money(v: float) -> str:
+    return f"${v:,.2f}"
+
+
+def _render_table(report: MeetingReport) -> str:
+    lines: List[str] = []
+    lines.append(f"Blended hourly rate: {_fmt_money(report.hourly_rate)}")
+    lines.append("")
+    header = f"{'COST':>12}  {'PPL':>4}  {'HOURS':>6}  TITLE"
+    lines.append(header)
+    lines.append("-" * max(len(header), 40))
+    for m in sorted(report.meetings, key=lambda x: x.cost, reverse=True):
+        lines.append(
+            f"{_fmt_money(m.cost):>12}  {m.attendees:>4}  "
+            f"{m.duration_hours:>6.2f}  {m.summary}"
+        )
+    lines.append("-" * max(len(header), 40))
+    lines.append(f"Meetings:          {report.meeting_count}")
+    lines.append(f"Total hours:       {report.total_hours:.2f}")
+    lines.append(f"Total person-hours:{report.total_person_hours:>8.2f}")
+    lines.append(f"TOTAL COST:        {_fmt_money(report.total_cost)}")
+    return "\n".join(lines)
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        prog=TOOL_NAME,
+        description="Compute the dollar cost of meetings from a calendar (.ics).",
+    )
+    parser.add_argument(
+        "--version", action="version", version=f"{TOOL_NAME} {TOOL_VERSION}"
+    )
+    sub = parser.add_subparsers(dest="command", required=True)
+
+    p_cost = sub.add_parser(
+        "cost", help="Compute meeting costs from an .ics file (use - for stdin)."
+    )
+    p_cost.add_argument("path", help="Path to .ics file, or - to read stdin.")
+    p_cost.add_argument(
+        "--salary",
+        type=float,
+        default=100_000.0,
+        help="Average annual salary per attendee (default: 100000).",
+    )
+    p_cost.add_argument(
+        "--overhead",
+        type=float,
+        default=1.4,
+        help="Fully-loaded overhead multiplier (default: 1.4).",
+    )
+    p_cost.add_argument(
+        "--hourly-rate",
+        type=float,
+        default=None,
+        help="Override blended hourly rate directly (bypasses salary/overhead).",
+    )
+    p_cost.add_argument(
+        "--format",
+        choices=["table", "json"],
+        default="table",
+        help="Output format (default: table).",
+    )
+    return parser
+
+
+def main(argv: Optional[List[str]] = None) -> int:
+    parser = build_parser()
+    args = parser.parse_args(argv)
+
+    if args.command == "cost":
+        try:
+            text = _read_input(args.path)
+        except OSError as exc:
+            print(f"error: cannot read {args.path}: {exc}", file=sys.stderr)
             return 2
+
+        try:
+            rate = (
+                args.hourly_rate
+                if args.hourly_rate is not None
+                else blended_hourly_rate(args.salary, args.overhead)
+            )
+            meetings = parse_ics(text)
+            report = compute_costs(meetings, rate)
+        except ICSParseError as exc:
+            print(f"error: {exc}", file=sys.stderr)
+            return 1
+        except ValueError as exc:
+            print(f"error: {exc}", file=sys.stderr)
+            return 2
+
+        if args.format == "json":
+            print(json.dumps(report.to_dict(), indent=2))
+        else:
+            print(_render_table(report))
         return 0
-    ap.print_help()
-    return 0
+
+    parser.error("unknown command")
+    return 2
+
 
 if __name__ == "__main__":
     sys.exit(main())
