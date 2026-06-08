@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: meetingcost, labels: { app: meetingcost } }
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: meetingcost } }
+  template:
+    metadata: { labels: { app: meetingcost } }
+    spec:
+      containers:
+        - name: meetingcost
+          image: ghcr.io/cognis-digital/meetingcost:latest
+          ports: [{ containerPort: 8000 }]
+          resources:
+            requests: { cpu: "50m", memory: "64Mi" }
+            limits: { cpu: "500m", memory: "256Mi" }
+---
+apiVersion: v1
+kind: Service
+metadata: { name: meetingcost }
+spec:
+  selector: { app: meetingcost }
+  ports: [{ port: 80, targetPort: 8000 }]
