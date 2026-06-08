@@ -36,9 +36,10 @@ viral office utility
 <a name="features"></a>
 ## Features
 
-- ✅ Todo
-- ✅ Fixme
-- ✅ Xxx
+- ✅ Blended Hourly Rate
+- ✅ Parse Ics
+- ✅ Compute Costs
+- ✅ Summarize
 - ✅ Runs on Linux/macOS/Windows · Docker · devcontainer
 - ✅ Ports in Python, JavaScript, Go, and Rust (`ports/`)
 
