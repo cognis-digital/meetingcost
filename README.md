@@ -20,6 +20,34 @@ pip install cognis-meetingcost
 meetingcost scan .            # → prioritized findings in seconds
 ```
 
+## Usage — step by step
+
+1. **Install** the CLI (Python 3.9+):
+
+   ```bash
+   pip install cognis-meetingcost
+   ```
+
+2. **Cost a calendar.** Point `cost` at an `.ics` export (or `-` for stdin). Tune the loaded labor rate with `--salary` and `--overhead`, or set `--hourly-rate` directly:
+
+   ```bash
+   meetingcost cost team-week.ics --salary 120000 --overhead 1.4
+   ```
+
+3. **Get machine-readable output** for dashboards or further processing with `--format json`:
+
+   ```bash
+   meetingcost cost team-week.ics --format json | jq '.total_cost'
+   ```
+
+4. **Read the result.** The table prints a per-meeting cost breakdown plus `TOTAL COST`, total hours, and person-hours; JSON carries the same fields (`total_cost`, `meeting_count`, `total_person_hours`, per-meeting `cost`).
+
+5. **Automate in CI / a pipe.** Stream a calendar straight in and extract the headline number:
+
+   ```bash
+   cat team-week.ics | meetingcost cost - --format json | jq '.total_cost'
+   ```
+
 ## Contents
 
 - [Why meetingcost?](#why) · [Features](#features) · [Quick start](#quick-start) · [Example](#example) · [Architecture](#architecture) · [AI stack](#ai-stack) · [How it compares](#how-it-compares) · [Integrations](#integrations) · [Install anywhere](#install-anywhere) · [Related](#related) · [Contributing](#contributing)
