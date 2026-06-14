@@ -34,3 +34,6 @@ meetingcost = "meetingcost.cli:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["meetingcost"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
