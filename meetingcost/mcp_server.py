@@ -1,6 +1,10 @@
-"""MEETINGCOST MCP server — exposes scan() as an MCP tool for Cognis.Studio."""
+"""MEETINGCOST MCP server — exposes summarize() as an MCP tool for Cognis.Studio."""
 from __future__ import annotations
-from meetingcost.core import scan, to_json
+
+import json
+
+from meetingcost.core import ICSParseError, summarize
+
 
 def serve() -> int:
     """Start an MCP stdio server. Requires the optional 'mcp' extra:
@@ -14,9 +18,13 @@ def serve() -> int:
     app = FastMCP("meetingcost")
 
     @app.tool()
-    def meetingcost_scan(target: str) -> str:
-        """Compute the dollar cost of meetings from your calendar (.ics). Returns JSON findings."""
-        return to_json(scan(target))
+    def meetingcost_scan(ics_text: str, hourly_rate: float = 67.31) -> str:
+        """Compute the dollar cost of meetings from .ics text. Returns JSON."""
+        try:
+            report = summarize(ics_text, hourly_rate=hourly_rate)
+        except ICSParseError as exc:
+            return json.dumps({"error": str(exc)})
+        return json.dumps(report.to_dict(), indent=2)
 
     app.run()
     return 0

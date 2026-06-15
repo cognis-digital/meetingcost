@@ -230,6 +230,8 @@ def _duration_hours(m: Meeting) -> float:
 
 def compute_costs(meetings: List[Meeting], hourly_rate: float) -> MeetingReport:
     """Populate duration/cost on each meeting and build an aggregate report."""
+    if meetings is None:
+        raise ValueError("meetings must not be None")
     if hourly_rate < 0:
         raise ValueError("hourly_rate must be non-negative")
 
@@ -252,6 +254,8 @@ def summarize(
     hourly_rate: Optional[float] = None,
 ) -> MeetingReport:
     """Convenience: parse .ics text and return a full cost report."""
+    if not text or not text.strip():
+        raise ICSParseError("input is empty — expected .ics calendar data")
     rate = hourly_rate if hourly_rate is not None else blended_hourly_rate(
         salary, overhead
     )

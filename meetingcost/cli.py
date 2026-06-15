@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from typing import List, Optional
 
@@ -89,16 +90,41 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def _validate_numeric_args(
+    args: argparse.Namespace, parser: argparse.ArgumentParser
+) -> None:
+    """Validate numeric CLI arguments and exit with a helpful message on failure."""
+    if args.command != "cost":
+        return
+    if hasattr(args, "salary") and args.salary < 0:
+        parser.error("--salary must be non-negative")
+    if hasattr(args, "overhead") and args.overhead <= 0:
+        parser.error("--overhead must be a positive number (e.g. 1.4)")
+    hr = getattr(args, "hourly_rate", None)
+    if hr is not None and hr < 0:
+        parser.error("--hourly-rate must be non-negative")
+
+
 def main(argv: Optional[List[str]] = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
 
     if args.command == "cost":
+        _validate_numeric_args(args, parser)
+
+        if args.path != "-" and not os.path.exists(args.path):
+            print(f"error: file not found: {args.path}", file=sys.stderr)
+            return 2
+
         try:
             text = _read_input(args.path)
         except OSError as exc:
             print(f"error: cannot read {args.path}: {exc}", file=sys.stderr)
             return 2
+
+        if not text.strip():
+            print("error: input is empty — expected .ics data", file=sys.stderr)
+            return 1
 
         try:
             rate = (
